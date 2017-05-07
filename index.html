@@ -25,8 +25,7 @@
 
 	<div class="container-fluid">
 
-		<div class="row text-center">
-
+		<div class="row text-center">	
 
 			<form id="player-input-form">
 				<input type="text" id="player-name" placeholder="Your name">
@@ -37,13 +36,15 @@
 
 		<div class="row center-block">
 
-			<div class="col-md-3 default text-center">
+			<div id="1" class="col-md-3 default text-center">
 				<div id="statusp1"> Waiting for Player 1 </div>
 
 					<div id="p1Square">
-						<img src="assets/images/rock.jpg" width="60px" height="60px" class="rock">
-						<img src="assets/images/paper.jpg" width="60px" height="60px" class="paper">
-						<img src="assets/images/scissors.jpg" width="60px" height="60px" class="scissors">
+						<div id="p1Pics">
+							<img src="assets/images/rock.jpg" width="60px" height="60px" class="rock">
+							<img src="assets/images/paper.jpg" width="60px" height="60px" class="paper">
+							<img src="assets/images/scissors.jpg" width="60px" height="60px" class="scissors">
+						</div>
 
 						<div> Losses: <div id="p1losses"></div></div> <div> Wins: <div id="p1wins"></div></div>
 					</div>
@@ -52,24 +53,23 @@
 
 			<div class="col-md-3 text-center middle" id="middle">
 
-				<div id="p1Choice" class="pull-left"><p><strong>Your Choice:</strong></p></div>
+				<div class="pull-left"><p><strong>Choice:</strong></p><img id="p1Choice"></div>
 
-
-
+				<div class="pull-right"><p><strong>Choice:</strong></p><img id="p2Choice"></div>
 
 			</div>
 
-			<div class="col-md-3 default text-center">
-
-				
+			<div id="2" class="col-md-3 default text-center">
 
 				<div id="statusp2"> Waiting for Player 2 </div>
 
 					<div id="p2Square">
 
-						<img src="assets/images/rock.jpg" width="60px" height="60px" class="rock">
-						<img src="assets/images/paper.jpg" width="60px" height="60px" class="paper">
-						<img src="assets/images/scissors.jpg" width="60px" height="60px" class="scissors">
+						<div id="p2Pics">
+							<img src="assets/images/rock.jpg" width="60px" height="60px" class="rock">
+							<img src="assets/images/paper.jpg" width="60px" height="60px" class="paper">
+							<img src="assets/images/scissors.jpg" width="60px" height="60px" class="scissors">
+						</div>
 
 					<div> Losses: <div id="p2losses"></div></div> <div> Wins: <div id="p2wins"></div></div>
 				</div>
@@ -96,15 +96,18 @@
 
 			<div class="chat-form text-center center-block">
 
-				<input type="text" id="message" size="55" placeholder="Chat here">
-				<button  class="btn btn-primary" type="submit" id="send"> Send </button><br>
+				<div class="col-md-6 col-md-offset-3">
+		
+					<form>
+						<input type="text" size="55" id="message" placeholder="Chat here">
+						<button class="btn btn-primary" id="send"> Send </button><br>        
+					</form>
+				
+				</div>
 
 			</div>
 
 		</div>
-
-
-
 
 	</div>
 

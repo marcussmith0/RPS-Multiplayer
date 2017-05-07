@@ -12,7 +12,7 @@ h1 {
 
 .active {
 
-	border: 2px solid green;
+	border: 2px solid  #afff05 ;
 	border-radius: 25px;
 	margin-top: 10px;
 	margin-left: 60px
@@ -26,12 +26,18 @@ h1 {
 	border-radius: 25px;
 	margin-top: 10px;
 	padding-left: 15px;
+	padding-right: 15px;
     margin-left: 70px;
 
 }
 
 img {
 	margin: 10px;
+}
+
+.picDem {
+	height: 60px;
+	width: 60px;
 }
 
 
