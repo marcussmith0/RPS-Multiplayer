@@ -12,11 +12,19 @@ h1 {
 
 .active {
 
-	border: 2px solid  #afff05 ;
+	border: 2px solid  yellow ;
 	border-radius: 25px;
 	margin-top: 10px;
 	margin-left: 60px
 	
+}
+
+#results {
+	font-size: 25px;
+	font-weight: bold;
+	padding-right: 45px;
+	color: red;
+
 }
 
 

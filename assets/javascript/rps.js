@@ -30,12 +30,14 @@ var p2Losses;
 var p1Name;
 var p2Name;
 
-var tie = false;
+var winner;
+
 
 $("#p1Square").hide();
 $("#p2Square").hide();
 
 turnRef.onDisconnect().remove();
+database.ref().child("chat").onDisconnect().remove();
 
 
 playerRef.on("child_added",function(snapshot){
@@ -93,7 +95,6 @@ function assignPlayers() {
 
     var numberOfPlayers = snapshot.child("player").numChildren();
 
-
     if(numberOfPlayers == 0) {
 
       playerNumber = 1;
@@ -105,8 +106,6 @@ function assignPlayers() {
       $("#p1losses").html(p1Losses);
       $("#p1wins").html(p1Wins);
       $("#player-input-form").hide();
-      
-
 
       playerRef.child(playerNumber).onDisconnect().remove();
 
@@ -195,16 +194,32 @@ turnRef.on("value",function(snapshot){
 
       if(playerNumber == 1) {
 
+         $("#p1Choice").hide();
+
          $("#1").removeClass("default");
          $("#1").addClass("active");
 
          $("#p1Square").show();
+         $("#p1Pics").show();
+
+         $("#middle").removeClass("active");
+         $("#middle").addClass("middle");
+
+         $("#results").empty();
+
+
 
       } else if(playerNumber == 2) {
+
+         $("#p2Choice").hide();
+         $("#results").empty();
 
          $("#1").removeClass("default");
          $("#1").addClass("active");
          $("#p2Pics").css("display", "none");
+
+         $("#middle").removeClass("active");
+         $("#middle").addClass("middle");
 
 
 
@@ -222,14 +237,18 @@ turnRef.on("value",function(snapshot){
 
         $("#2").removeClass("default");
         $("#2").addClass("active");
+        $("#results").empty();
 
         $("#1").removeClass("active");
         $("#1").addClass("default");
 
       } else if(playerNumber == 2) {
 
+         $("#p2Choice").hide();
+
          $("#1").removeClass("active");
          $("#1").addClass("default");
+         $("#results").empty();
 
          $("#2").removeClass("default");
          $("#2").addClass("active");
@@ -256,6 +275,10 @@ turnRef.on("value",function(snapshot){
 
       whoWon();
 
+      setTimeout(function(){
+            turnRef.set(1);
+        },2500);
+
 
 
     }
@@ -278,6 +301,8 @@ $(".paper").on("click", function() {
 
     $("#p1Choice").attr("src", imgSrc);
     $("#p1Choice").addClass("picDem");
+    $("#p1Choice").show();
+    $("#p1Pics").hide();
 
     turnRef.set(2);
 
@@ -289,13 +314,12 @@ $(".paper").on("click", function() {
 
     $("#p2Choice").attr("src", imgSrc);
     $("#p2Choice").addClass("picDem");
+    $("#p2Choice").show();
+    $("#p2Pics").hide();
 
     turnRef.set(3);
 
   }
-
-
-
 
 });
 
@@ -314,6 +338,9 @@ $(".rock").on("click", function() {
 
     $("#p1Choice").attr("src", imgSrc);
     $("#p1Choice").addClass("picDem");
+    $("#p1Choice").show();
+    $("#p1Pics").hide();
+
 
     turnRef.set(2);
 
@@ -325,6 +352,8 @@ $(".rock").on("click", function() {
 
     $("#p2Choice").attr("src", imgSrc);
     $("#p2Choice").addClass("picDem");
+    $("#p2Choice").show();
+    $("#p2Pics").hide();
 
     turnRef.set(3);
 
@@ -349,6 +378,8 @@ $(".scissors").on("click", function() {
 
     $("#p1Choice").attr("src", imgSrc);
     $("#p1Choice").addClass("picDem");
+    $("#p1Choice").show();
+    $("#p1Pics").hide();
 
     turnRef.set(2);
 
@@ -360,6 +391,10 @@ $(".scissors").on("click", function() {
 
     $("#p2Choice").attr("src", imgSrc);
     $("#p2Choice").addClass("picDem");
+    $("#p2Choice").show();
+    $("#p2Pics").hide();
+
+
 
     turnRef.set(3);
 
@@ -368,9 +403,150 @@ $(".scissors").on("click", function() {
 
 });
 
+
+
+
+
 function whoWon() {
 
-  
+  playerRef.once("value",function(snapshot){
+
+    p1Choice = snapshot.val()["1"].choice;
+    p2Choice = snapshot.val()["2"].choice;
+    p1Name = snapshot.val()["1"].name;
+    p2Name = snapshot.val()["2"].name;
+
+
+    switch(p1Choice) {
+
+      case "rock":
+        switch (p2Choice) {
+
+          case "rock":
+
+            $("#results").html("It was a tie!!");
+
+            console.log("ITISATIE!!!");
+
+            break;
+
+          case "paper":
+            console.log("PLAYER2WINS!!!");
+            $("#results").html( p2Name + " Wins!!!");
+
+            playerRef.child("1").update({
+              losses: p1Losses + 1
+            });
+
+            playerRef.child("2").update({
+              wins: p2Wins + 1
+            });
+
+            break;
+
+          case "scissors":
+            console.log("PLAYER1wINS!!!");
+            $("#results").html( p1Name + " Wins!!!");
+
+            playerRef.child("1").update({
+              wins: p1Wins + 1
+            });
+
+            playerRef.child("2").update({
+              losses: p2Losses + 1
+            });
+
+            break;
+
+        }
+
+
+        break;
+
+      case "scissors":
+
+        switch(p2Choice) {
+          case "rock":
+            console.log("PLAYER2WINS!!!");
+            $("#results").html( p2Name + " Wins!!!");
+
+            playerRef.child(1).update({
+              losses: p1Losses + 1
+            });
+
+            playerRef.child(2).update({
+              wins: p2Wins + 1
+            });
+
+            break;
+
+          case "paper":
+            console.log("PLAYER1WINS!!!!");
+            $("#results").html( p1Name + " Wins!!!");
+
+            playerRef.child("1").update({
+              wins: p1Wins + 1
+            });
+
+            playerRef.child("2").update({
+              losses: p2Losses + 1
+            });
+
+            break;
+
+          case "scissors":
+            $("#results").html("It was a tie!!");
+
+            break;
+
+        }
+
+        break;
+
+      case "paper":
+
+        switch(p2Choice) {
+
+          case "paper":
+
+            $("#results").html("It was a tie!!");
+
+            break;
+
+          case "rock":
+
+            console.log("PLAYER1WINS!!!!");
+            $("#results").html( p1Name + " Wins!!!");
+
+            playerRef.child("1").update({
+              wins: p1Wins + 1
+            });
+
+            playerRef.child("2").update({
+              losses: p2Losses + 1
+            });
+
+            break;
+
+          case "scissors":
+
+            console.log("PLAYER2WINS!!!!");
+            $("#results").html( p2Name + " Wins!!!");
+
+            playerRef.child("1").update({
+              losses: p1Losses + 1
+            });
+
+            playerRef.child("2").update({
+              wins: p2Wins + 1
+            });
+
+            break;
+
+
+        }
+
+        break;
 
 
 
@@ -379,8 +555,64 @@ function whoWon() {
 
 
 
+
+    }
+
+
+
+
+
+
+
+
+
+});
+
+
+  /* $("#middle").removeClass("active");
+  $("#middle").addClass("middle");
+
+  */
+
+ 
 
 
 
 
 }
+
+$("#send").on("click",function(e){
+
+    e.preventDefault();
+
+    var message = $("#message").val();
+
+    $("#message").val("");
+
+    database.ref().child("chat").push({
+      message: playerName + ": " + message
+    });
+
+
+    
+
+});
+
+database.ref().child("chat").orderByKey().on("child_added", function(snapshot) {
+
+    var newMessage = $("<p>").html(snapshot.val().message);
+
+    if (playerNumber == 1) {
+
+      newMessage.addClass("player1");
+
+    } else {
+
+      newMessage.addClass("player2");
+
+    }
+
+    $(".chatlogs").append(newMessage);
+
+});
+ 
